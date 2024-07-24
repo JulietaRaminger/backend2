@@ -1,0 +1,23 @@
+<header class="header">
+    <h1 class="header__title">Login</h1>
+</header>
+
+<main class="main-content">
+    <section class="form-section">
+        <form class="login-form" action="/api/sessions/login" method="post">
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" type="email" name="email" id="email">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">Contraseña</label>
+                <input class="form-input" type="password" name="password" id="password">
+            </div>
+
+            <div class="form-actions">
+                <input class="btn-submit" type="submit" value="Aceptar">
+                <a href="/"><input class="btn-back" type="button" value="Volver al Menú"></a>
+            </div>
+        </form>
+    </section>
+</main>
