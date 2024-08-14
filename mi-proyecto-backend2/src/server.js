@@ -1,67 +1,114 @@
 import express from "express";
-import paths from "./utils/paths.js";
-import handlebars from "./config/handlebars.config.js";
-import mongoDB from "./config/mongoose.config.js";
+import { Server } from "socket.io";
+import { engine } from "express-handlebars";
 import session from "express-session";
-import MongoStore from "connect-mongo";
-import apiUsersRouter from "./routes/api.users.routes.js";
-import apiSessionsRouter from "./routes/api.sessions.routes.js";
-import homeRouter from "./routes/home.routes.js";
+import MongoStorage from "connect-mongo";
+import "dotenv/config";
+import { dbconnection } from "./database/config.js";
+import { productModel } from "./models/products.js";
+import { MessageModel } from "./models/messages.js";
+import viewsRouter from "./routes/views.router.js";
+import { productsRouter } from "./routes/products.router.js";
+import { cartsRouter } from "./routes/carts.router.js";
+import __dirname from "./utils.js";
+import {
+  addProductServices,
+  getProductsServices,
+} from "./services/products.service.js";
 
-const server = express();
-const PORT = 8080;
+// Inicialización de la aplicación
+const app = express();
+const PORT = process.env.PORT || 8080; // Valor predeterminado si no está en el archivo .env
 const HOST = "localhost";
 
-// Middleware para decodificar datos de formularios y JSON
-server.use(express.urlencoded({ extended: true }));
-server.use(express.json());
+// Configuración del middleware
+app.use(express.static(__dirname + "/public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", __dirname + "/views");
 
-// Configuración del store de sesiones
-const storeOptions = MongoStore.create({
-    mongoUrl:  "mongodb+srv://julietaraminger:PFucmdOvKhfCPHFD@cluster0.uwq4ups.mongodb.net/backend2",
-    autoRemove: "native", // Eliminar automáticamente las sesiones expiradas
-    // ttl: La expiración de la sesión se controla a través de cookie.maxAge.
+app.use(
+  session({
+    storage: MongoStorage.create({
+      mongoUrl: `${process.env.URI_MONGO_DB}/${process.env.NAME_DB}`,
+      ttl: 3600,
+    }),
+    secret: process.env.SECRET_SESSION,
+    saveUninitialized: true,
+    resave: false,
+  })
+);
+
+// Rutas
+app.use("/", viewsRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+
+// Conexión a la base de datos
+await dbconnection();
+
+// Iniciar el servidor
+const expressServer = app.listen(PORT, () => {
+  console.log(`Servidor ejecutándose en http://${HOST}:${PORT}`);
 });
 
-// Configuración de la sesión
-const sessionOptions = {
-    store: storeOptions,
-    secret: "miClaveSecreta",
-    cookie: { maxAge: 2 * 60 * 60 * 1000 }, // 2 horas
-    saveUninitialized: false, // No guarda sesiones no inicializadas
-    resave: false, // No resguardar si la sesión no ha cambiado
-};
+// Configuración de Socket.IO
+const io = new Server(expressServer);
 
-// Middleware para gestión de sesiones
-server.use(session(sessionOptions));
+io.on("connection", async (socket) => {
+  try {
+    // Enviar productos al conectar el socket
+    const limit = 50;
+    const { payload } = await getProductsServices({ limit });
+    socket.emit("productos", payload);
 
-// Configuración del motor de plantillas
-handlebars.config(server);
+    // Agregar producto
+    socket.on("agregarProducto", async (producto) => {
+      try {
+        const newProduct = await addProductServices(producto);
+        if (newProduct) {
+          const { payload: updatedProducts } = await getProductsServices();
+          io.emit("productos", updatedProducts);
+        }
+      } catch (error) {
+        console.error("Error al agregar producto:", error);
+      }
+    });
 
-// declaracion de ruta estatica
-server.use("/", express.static(paths.css));
+    // Eliminar producto
+    socket.on("eliminarProducto", async (id) => {
+      try {
+        const result = await productModel.deleteOne({ _id: id });
+        if (result.deletedCount > 0) {
+          const { payload: updatedProducts } = await getProductsServices();
+          io.emit("productos", updatedProducts);
+          console.log("Producto eliminado con éxito:", id);
+        } else {
+          console.error("Producto no encontrado para eliminar:", id);
+        }
+      } catch (error) {
+        console.error("Error al eliminar producto:", error);
+      }
+    });
 
-// Enrutadores
-server.use("/api/users", apiUsersRouter);
-server.use("/api/sessions", apiSessionsRouter);
-server.use("/", homeRouter);
+    // Chat
+    socket.on("message", async (data) => {
+      try {
+        const newMessage = await MessageModel.create({ ...data });
+        if (newMessage) {
+          const messages = await MessageModel.find();
+          io.emit("messageLogs", messages);
+        }
+      } catch (error) {
+        console.error("Error al crear mensaje:", error);
+      }
+    });
 
-// Declaración de ruta estática: http://localhost:8080/api/public
-server.use("/public", express.static(paths.public));
-
-// Control de rutas inexistentes
-server.use("*", (req, res) => {
-    res.status(404).send("<h1>Error 404</h1><h3>La URL indicada no existe en este servidor</h3>");
-});
-
-// Control de errores internos
-server.use((error, req, res) => {
-    console.log("Error:", error.message);
-    res.status(500).send("<h1>Error 500</h1><h3>Se ha generado un error en el servidor</h3>");
-});
-
-// Método oyente de solicitudes
-server.listen(PORT, async () => {
-    console.log(`Ejecutándose en http://${HOST}:${PORT}`);
-    await mongoDB.connectDB();
+    // Notificar a otros usuarios sobre un nuevo usuario
+    socket.broadcast.emit("nuevo_user");
+  } catch (error) {
+    console.error("Error en la conexión de Socket.IO:", error);
+  }
 });
