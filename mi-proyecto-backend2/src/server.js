@@ -18,7 +18,7 @@ import {
 
 // Inicialización de la aplicación
 const app = express();
-const PORT = process.env.PORT || 8080; // Valor predeterminado si no está en el archivo .env
+const PORT = process.env.PORT || 3000; // Valor predeterminado si no está en el archivo .env
 const HOST = "localhost";
 
 // Configuración del middleware

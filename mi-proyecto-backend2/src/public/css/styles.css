@@ -1,109 +1,74 @@
-h1 {
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 10px;
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    /* Fondo blanco */
     color: #333;
-    background-color: #97d19a;
+    /* Texto gris oscuro */
+    margin: 0;
+    padding: 0;
 }
 
-h2 {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #666;
+/* Contenedor principal */
+div {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    /* Fondo gris claro */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Encabezado de la sección */
 h3 {
     text-align: center;
-    font-size: 24px;
+    color: #ff007f;
+    /* Color rosita */
     margin-bottom: 20px;
-    color: #666;
 }
 
+/* Estilo de la tabla */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
 }
 
 thead {
-    background-color: #f2f2f2;
+    background-color: #ff007f;
+    /* Color rosita */
+    color: white;
 }
 
-th,
-td {
-    padding: 12px 15px;
+thead th {
+    padding: 10px;
     text-align: left;
 }
 
-.eliminar-button button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
+tbody tr {
+    background-color: #fff;
+    /* Fondo blanco */
+    border-bottom: 1px solid #ddd;
+    /* Línea de separación */
 }
 
-.eliminar-button button:hover {
-    background-color: #c82333;
-}
-
-th {
-    background-color: #4caf50;
-    color: white;
-    font-weight: bold;
-}
-
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+tbody td {
+    padding: 10px;
 }
 
 tbody tr:hover {
-    background-color: #f2f2f2;
+    background-color: #f0f0f0;
+    /* Fondo gris claro al pasar el mouse */
 }
 
-h2 {
-    margin-bottom: 20px;
-}
-
-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #cccccc;
+tbody td img {
+    width: 50px;
+    height: auto;
     border-radius: 5px;
-    background-color: #d2ecd3;
 }
 
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-}
-
-button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: green;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button[type="submit"]:hover {
-    background-color: #45a049;
+/* Estilo de imagen cuando no hay imagen */
+tbody td.no-image {
+    color: #ccc;
+    /* Texto gris claro */
 }

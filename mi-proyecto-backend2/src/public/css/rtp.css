@@ -1,0 +1,104 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    /* Fondo negro */
+    color: #fff;
+    /* Texto en blanco */
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1a1a1a;
+    /* Fondo gris oscuro */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    /* Bordes redondeados */
+}
+
+h1,
+h2,
+h3 {
+    color: #ff66cc;
+    /* Color rosita */
+}
+
+.form {
+    margin-bottom: 20px;
+}
+
+.form label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #ccc;
+    /* Texto en gris claro */
+}
+
+.form input[type="text"],
+.form input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+    /* Borde gris oscuro */
+    border-radius: 4px;
+    background-color: #333;
+    /* Fondo gris oscuro */
+    color: #fff;
+    /* Texto en blanco */
+}
+
+.form input[type="text"]:focus,
+.form input[type="number"]:focus {
+    border-color: #ff66cc;
+    /* Color rosita al enfocar */
+    outline: none;
+}
+
+.btn-submit {
+    background-color: #ff66cc;
+    /* Botón en rosita */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    /* Transición suave */
+}
+
+.btn-submit:hover {
+    background-color: #ff3385;
+    /* Rosita más oscuro al pasar el mouse */
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    /* Espacio adicional arriba de la tabla */
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+    /* Borde gris oscuro */
+}
+
+.product-table th {
+    background-color: #ff66cc;
+    /* Encabezado en rosita */
+    color: white;
+}
+
+.product-table tr:hover {
+    background-color: #333;
+    /* Fondo gris oscuro al pasar el mouse */
+}
