@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
+
+const { Schema, model, models } = mongoose;
 
 const nameCollection = "user";
 
@@ -19,6 +21,7 @@ const UserSchema = new Schema({
   google: { type: Boolean, default: false },
   facebook: { type: Boolean, default: false },
 });
+
 UserSchema.set("toJSON", {
   transform: function (doc, ret) {
     delete ret.__v;
@@ -26,4 +29,5 @@ UserSchema.set("toJSON", {
   },
 });
 
-export const userModel = model(nameCollection, UserSchema);
+// Usa el modelo existente si ya ha sido compilado, o define uno nuevo si no existe
+export const userModel = models[nameCollection] || model(nameCollection, UserSchema);
