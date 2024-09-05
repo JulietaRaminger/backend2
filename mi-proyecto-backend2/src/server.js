@@ -6,7 +6,7 @@ import MongoStorage from "connect-mongo";
 import passport from "passport";
 import "dotenv/config";
 import { dbconnection } from "./database/config.js";
-import { productModel } from "./models/products.js";
+import { productModel } from './models/products.js';
 import { MessageModel } from "./models/messages.js";
 import viewsRouter from "./routes/views.router.js";
 import { productsRouter } from "./routes/products.router.js";

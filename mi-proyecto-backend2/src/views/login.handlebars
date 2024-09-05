@@ -1,19 +1,15 @@
-<!DOCTYPE html>
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesion</title>
-    <!-- Enlace al archivo CSS -->
-    <link rel="stylesheet" href="css/login.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venta de Productos</title>
+    <link rel="stylesheet" href="/css/login.css" />
 </head>
 
 
 <body>
-    <header>
-        <h1>Iniciar sesión</h1>
-    </header>
+    <h1>Iniciar sesión</h1>
 
     <main>
         <section>
@@ -28,12 +24,22 @@
                 </div>
 
                 <div>
-                    <button type="submit">Iniciar</button>
+                    <button type="submit">Entrar</button>
                 </div>
             </form>
-            <p>No tiene una cuenta? <a href="/register"> Registrate </a></p>
+            <div class="github-container">
+                <a href="/github">
+                    <button type="button" class="github-login">
+                        <i class="fab fa-github"></i>
+                        Entrar con mi GitHub
+                    </button>
+                </a>
+            </div>
+            <p>¿No tiene una cuenta? <a href="/register"> Registrate </a></p>
         </section>
     </main>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
 
 </html>

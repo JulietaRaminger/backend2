@@ -1,22 +1,30 @@
-{{header}}
+<html lang="es">
 
-<div
-    style="font-family: 'Arial', sans-serif; max-width: 800px; margin: 20px auto; background-color: #333; padding: 20px; border-radius: 10px;">
-    <h3 style="text-align: center; color: #ff9800; margin-bottom: 20px;">Lista de
-        productos de un carrito:</h3>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Venta de Productos</title>
+    <link rel="stylesheet" href="/css/cart.css" />
+</head>
 
-    {{#each carrito.products}}
-    <div
-        style="background-color: #444; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
-        <h4 style="color: #fff; margin-bottom: 10px;">Nombre del producto:
-            <span style="color: #ff9800;">{{this.id.title}}</span>
-        </h4>
-        <p style="color: #ccc; margin-bottom: 5px;">Descripción:
-            {{this.id.description}}</p>
-        <p style="color: #fff; font-weight: bold;">Precio:
-            <span style="color: #ff9800;">${{this.id.price}}</span>
-        </p>
-        <p style="color: #ccc;">Cantidad: {{this.quantity}}</p>
+<body>
+    {{> header}}
+    <div class="container">
+        <h3 class="header-title">Lista de productos de un carrito:</h3>
+
+        {{#each carrito.products}}
+        <div class="product-item">
+            <h4 class="product-name">Nombre del producto:
+                <span class="product-title">{{this.id.title}}</span>
+            </h4>
+            <p class="product-description">Descripción: {{this.id.description}}</p>
+            <p class="product-price">Precio:
+                <span class="price-amount">${{this.id.price}}</span>
+            </p>
+            <p class="product-quantity">Cantidad: {{this.quantity}}</p>
+        </div>
+        {{/each}}
     </div>
-    {{/each}}
-</div>
+</body>
+
+</html>

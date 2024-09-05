@@ -1,5 +1,5 @@
-import { UserDAO } from "../daos/index.js";
+import { UserDao } from "../daos/index.js";
 
-export const getUserById = async (id) => await UserDAO.getUserById();
-export const getUserEmail = async (email) => await UserDAO.getUserEmail();
-export const registerUser = async (userData) => await UserDAO.registerUser();
+export const getUserById = async (id) => await UserDao.getUserById();
+export const getUserEmail = async (email) => await UserDao.getUserEmail();
+export const registerUser = async (userData) => await UserDao.registerUser();
