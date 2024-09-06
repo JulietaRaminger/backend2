@@ -13,7 +13,7 @@ body {
 .container {
     max-width: 800px;
     margin: 20px auto;
-    background-color: #fff;
+    background-color: #ffffff3e;
     /* Fondo blanco */
     padding: 20px;
     border-radius: 10px;
@@ -29,8 +29,8 @@ h3 {
 }
 
 /* Estilo de las tarjetas de producto */
-.product-card {
-    background-color: #f5f5f5;
+.product-item {
+    background-color: #f5f5f53a;
     /* Fondo gris claro */
     padding: 15px;
     border-radius: 8px;
@@ -38,25 +38,7 @@ h3 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.product-card h4 {
-    color: #333;
-    /* Texto gris oscuro */
-    margin-bottom: 10px;
-}
-
-.product-card span {
-    color: #ff007f;
+.product-name {
+    color: #ef9bc5;
     /* Color rosita */
-}
-
-.product-card p {
-    color: #555;
-    /* Texto gris medio */
-    margin-bottom: 5px;
-}
-
-.product-card p span {
-    color: #ff007f;
-    /* Color rosita para el precio */
-    font-weight: bold;
 }

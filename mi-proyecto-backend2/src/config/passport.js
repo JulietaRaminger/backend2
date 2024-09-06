@@ -52,25 +52,26 @@ export const initializarPassport = () => {
       async (username, password, done) => {
         try {
           const user = await getUserEmail(username);
-
+  
           if (!user) {
             console.log("El usuario no existe");
-            done(null, false);
+            return done(null, false, { message: "El usuario no existe" });
           }
-
+  
           if (!isValidPassword(password, user.password)) {
-            console.log("las Contraseñas no coinciden");
-            return done(null, false);
+            console.log("Las contraseñas no coinciden");
+            return done(null, false, { message: "Las contraseñas no coinciden" });
           }
-
+  
           return done(null, user);
         } catch (error) {
-          done(error);
+          console.error("Error en la estrategia de login: ", error);
+          return done(error);
         }
       }
     )
   );
-
+  
   passport.serializeUser((user, done) => {
     done(null, user._id);
   });
