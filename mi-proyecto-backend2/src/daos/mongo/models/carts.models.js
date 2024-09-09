@@ -1,30 +1,28 @@
-import mongoose from 'mongoose';
+import { Schema, model } from "mongoose";
 
-const nameCollection = 'Cart';
+const nameCollection = "Cart";
 
-const CartSchema = new mongoose.Schema({
+const CartSchema = new Schema({
   products: [
     {
       id: {
         _id: false,
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Producto', 
+        type: Schema.Types.ObjectId,
+        ref: "Producto",
       },
       quantity: {
         type: Number,
-        required: [true, "La cantidad del producto es obligatoria"],
+        required: [true, "La cantidad del producto es obligatorio"],
       },
     },
   ],
 });
 
-CartSchema.set('toJSON', {
+CartSchema.set("toJSON", {
   transform: function (doc, ret) {
+    delete ret._v;
     return ret;
   },
 });
 
-
-const cartModel = mongoose.models[nameCollection] || mongoose.model(nameCollection, CartSchema);
-
-export { cartModel };
+export const cartModel = model(nameCollection, CartSchema); // Named export
