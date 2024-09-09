@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -9,59 +10,24 @@
 
 <body>
     {{> header}}
-    <div class="container">
-        <h3 class="header-title">Lista de productos de un carrito:</h3>
+    <div>
+        <h3>Lista de productos de un carrito:</h3>
 
         {{#each carrito.products}}
-        <div class="product-item">
-            <h4 class="product-name">Nombre del producto:
-                <span class="product-title">{{this.id.title}}</span>
+        <div>
+            <h4>Nombre del producto:
+                <span>{{this.id.title}}</span>
             </h4>
-            <p class="product-description">Descripción: {{this.id.description}}</p>
-            <p class="product-price">Precio:
-                <span class="price-amount">${{this.id.price}}</span>
+            <p>Descripción:
+                {{this.id.description}}</p>
+            <p>Precio:
+                <span>${{this.id.price}}</span>
             </p>
-            <p class="product-quantity">Cantidad:
-                <button onclick="updateQuantity('{{../_id}}', '{{this.id._id}}', {{this.quantity}} - 1)">-</button>
-                <span>{{this.quantity}}</span>
-                <button onclick="updateQuantity('{{../_id}}', '{{this.id._id}}', {{this.quantity}} + 1)">+</button>
-            </p>
-            <button onclick="removeProduct('{{../_id}}', '{{this.id._id}}')">Eliminar producto</button>
+            <p>Cantidad: {{this.quantity}}</p>
         </div>
         {{/each}}
     </div>
 
-    <script>
-        function updateQuantity(cartId, productId, quantity) {
-            if (quantity < 1) return; // Evita que la cantidad sea menor que 1
-
-            fetch(`/api/carts/${cartId}/products/${productId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ quantity })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    location.reload(); // Recarga la página para actualizar la cantidad visualmente
-                })
-                .catch(error => console.error('Error al actualizar la cantidad:', error));
-        }
-
-        function removeProduct(cartId, productId) {
-            fetch(`/api/carts/${cartId}/products/${productId}`, {
-                method: 'DELETE',
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    location.reload(); // Recarga la página después de eliminar el producto
-                })
-                .catch(error => console.error('Error al eliminar el producto:', error));
-        }
-    </script>
 </body>
 
 </html>

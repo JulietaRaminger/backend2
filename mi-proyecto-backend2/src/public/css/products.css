@@ -82,7 +82,7 @@ tbody .status-active {
 }
 
 tbody .status-inactive {
-    color: #f44336;
+    color: #f4369e;
     /* Rojo brillante */
 }
 
@@ -92,7 +92,7 @@ tbody .no-image {
 }
 
 tbody .cart-button {
-    background-color: #ff6f61;
+    background-color: #ff61b5;
     /* Color rosita oscuro */
     color: #fff;
     border: none;
@@ -102,7 +102,7 @@ tbody .cart-button {
 }
 
 tbody .cart-button:hover {
-    background-color: #e64a19;
+    background-color: #e61994;
     /* Naranja oscuro */
 }
 

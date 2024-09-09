@@ -9,7 +9,7 @@ export const homeView = async (req = request, res = response) => {
 
   return res.render("home", {
     productos: payload,
-    styles: "style.css",
+    styles: "styles.css",
     user,
   });
 };

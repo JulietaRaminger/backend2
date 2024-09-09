@@ -1,25 +1,41 @@
-import mongoose from "mongoose";
-
-const { Schema, model, models } = mongoose;
+import { Schema, model } from "mongoose";
 
 const nameCollection = "Producto";
 
-const ProductSchema = new Schema({
-  name: { type: String, required: [true, "El nombre del producto es obligatorio"] },
-  description: { type: String },
-  price: { type: Number, required: [true, "El precio es obligatorio"] },
-  stock: { type: Number, default: 0 },
-  category: { type: String },
-  image: { type: String },
-  createdAt: { type: Date, default: Date.now },
+const ProductoSchema = new Schema({
+  title: {
+    type: String,
+    required: [true, "El titulo del prodcuto es obligatorio"],
+  },
+  description: {
+    type: String,
+    required: [true, "La descripcion del prodcuto es obligatorio"],
+  },
+  price: {
+    type: Number,
+    required: [true, "El precio del prodcuto es obligatorio"],
+  },
+  thumbnail: [{ type: String }],
+  code: {
+    type: String,
+    required: [true, "El codigo del prodcuto es obligatorio"],
+    unique: true,
+  },
+  stock: {
+    type: Number,
+    required: [true, "El stock del prodcuto es obligatorio"],
+  },
+  status: { type: Boolean, default: true },
+  category: {
+    type: String,
+    required: [true, "La categoria del prodcuto es obligatorio"],
+  },
 });
 
-ProductSchema.set("toJSON", {
+ProductoSchema.set("toJSON", {
   transform: function (doc, ret) {
-    delete ret.__v;
     return ret;
   },
 });
 
-// Usa el modelo existente si ya ha sido compilado, o define uno nuevo si no existe
-export const productModel = models[nameCollection] || model(nameCollection, ProductSchema);
+export const productModel = model(nameCollection, ProductoSchema);

@@ -7,103 +7,99 @@
     <link rel="stylesheet" href="/css/products.css" />
 </head>
 
-<body>
-    {{> header}}
 
-    <div class="container">
-        <h3>Lista de Productos</h3>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                    <th>Código</th>
-                    <th>Stock</th>
-                    <th>Categoría</th>
-                    <th>Estado</th>
-                    <th>Imagen</th>
-                    <th>Agregar</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each result.payload}}
-                <tr>
-                    <td>{{this.title}}</td>
-                    <td>{{this.description}}</td>
-                    <td class="price">${{this.price}}</td>
-                    <td>{{this.code}}</td>
-                    <td>{{this.stock}}</td>
-                    <td>{{this.category}}</td>
-                    <td>
-                        {{#if this.status}}
-                        <span class="status-active">Activo</span>
-                        {{else}}
-                        <span class="status-inactive">Desactivado</span>
-                        {{/if}}
-                    </td>
-                    <td>
-                        {{#if this.thumbnail}}
-                        <a href="{{this.thumbnail}}" target="_blank">
-                            <img src="{{this.thumbnail}}" alt="img" />
-                        </a>
-                        {{else}}
-                        <span class="no-image">No hay imagen</span>
-                        {{/if}}
-                    </td>
-                    <td>
-                        <button class="cart-button" onclick="addToCart('{{this._id}}')">
-                            <i class="fas fa-shopping-cart cart-icon"></i> Agregar
-                        </button>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+{{> header}}
 
-        <div class="pagination">
-            <span>Limite por Página: {{result.limit}}</span><br>
+<div>
+    <h3>Lista de Productos</h3>
 
-            {{#if result.query}}
-            <span>Filtrado por: {{result.query}}</span>
-            {{/if}}
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Código</th>
+                <th>Stock</th>
+                <th>Categoría</th>
+                <th>Estado</th>
+                <th>Imagen</th>
+                <th>Agregar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each result.payload}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.description}}</td>
+                <td>${{this.price}}</td>
+                <td>{{this.code}}</td>
+                <td>{{this.stock}}</td>
+                <td>{{this.category}}</td>
+                <td>
+                    {{#if this.status}}
+                    <span>Activo</span>
+                    {{else}}
+                    <span>Desactivado</span>
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if this.thumbnail}}
+                    <a href="{{this.thumbnail}}" target="_blank">
+                        <img src="{{this.thumbnail}}" alt="img" />
+                    </a>
+                    {{else}}
+                    <span>No hay imagen</span>
+                    {{/if}}
+                </td>
+                <td>
+                    <button class="cart-button" onclick="addToCart('{{this._id}}')">
+                        <i class="fas fa-shopping-cart cart-icon"></i> Agregar
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 
-            {{#if result.hasPrevPage}}
-            <a
-                href="?page={{result.prevPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">&larr;
-                Anterior</a>
-            {{/if}}
+    <div class="pagination">
+        <span>Limite por Página: {{result.limit}}</span><br>
 
-            <span>Página {{result.page}} de {{result.totalPages}}</span>
+        {{#if result.query}}
+        <span>Filtrado por: {{result.query}}</span>
+        {{/if}}
 
-            {{#if result.hasNextPage}}
-            <a
-                href="?page={{result.nextPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Siguiente
-                &rarr;</a>
-            {{/if}}
-        </div>
+        {{#if result.hasPrevPage}}
+        <a href="?page={{result.prevPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">&larr;
+            Anterior</a>
+        {{/if}}
 
-        <script>
-            function addToCart(productId) {
-                const idCart = "66db20cc9ede0445750f3bd8";
-                fetch(`/api/carts/${idCart}/products/${productId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                    })
-                    .catch(error => {
-                        console.log("Error: ", error);
-                    });
-            }
-        </script>
+        <span>Página {{result.page}} de {{result.totalPages}}</span>
 
+        {{#if result.hasNextPage}}
+        <a href="?page={{result.nextPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Siguiente
+            &rarr;</a>
+        {{/if}}
     </div>
-</body>
 
-</html>
+    <script>
+        function addToCart(productId) {
+            const idCart = "66df406e9cf65cbe2469d560";
+            fetch(`/api/carts/${idCart}/products/${productId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.log("Error: ", error);
+                });
+        }
+    </script>
+
+</div>
