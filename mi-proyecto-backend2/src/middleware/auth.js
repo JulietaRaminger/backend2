@@ -1,43 +1,18 @@
-import { request, response } from "express";
-import { validationResult } from "express-validator";
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-export const auth = (req = request, res, next) => {
-  if (req.session?.user) {
-    return next();
-  }
+dotenv.config();
 
-  return res.redirect("/login");
-};
+const secret = process.env.JWT_SECRET
+export const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-export const admin = (req = request, res, next) => {
-  if (req.session?.user.rol === "admin") {
-    return next();
-  }
+    if (token == null) return res.sendStatus(401);
 
-  return res.redirect("/");
-};
-
-export const validarCampos = (req = request, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ ok: false, errors: errors.array() });
-  }
-  next();
-};
-
-export const validateJWT = async (req, res, next) => {
-  const token = req.headers["x-token"];
-
-  if (!token) {
-    return res.status(401).json({ msg: "No se proporcionó token" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.user = await User.findById(decoded.id); // Ajusta según tu esquema de usuario
-    next();
-  } catch (error) {
-    return res.status(401).json({ msg: "Token inválido" });
-  }
+    jwt.verify(token, secret, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
 };
