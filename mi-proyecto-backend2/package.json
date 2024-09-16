@@ -1,42 +1,29 @@
 {
-    "name": "mi-proyecto-backend2",
+    "name": "julieta",
     "version": "1.0.0",
-    "description": " ",
-    "main": "src/app.js",
+    "main": "index.js",
     "type": "module",
     "scripts": {
-        "dev": "node --watch --no-warnings ./src/app.js",
-        "start": "node ./src/app.js",
-        "stop-windows": "taskkill /F /IM node.exe",
-        "stop-linux": "killall -9 node",
-        "lint": "eslint ./src --fix"
+        "dev": "nodemon src/app.js"
     },
-    "author": "Julieta Raminger",
+    "keywords": [],
+    "author": "",
     "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "nodemon": "^3.1.3"
+    },
     "dependencies": {
         "bcrypt": "^5.1.1",
-        "bcryptjs": "^2.4.3",
-        "comander": "^0.0.1-security",
-        "connect-mongo": "^5.1.0",
         "cookie-parser": "^1.4.6",
-        "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
-        "express-handlebars": "^7.1.3",
-        "express-session": "^1.18.0",
-        "express-validator": "^7.2.0",
+        "express-handlebars": "^7.1.2",
         "jsonwebtoken": "^9.0.2",
-        "mongoose": "^8.5.1",
-        "mongoose-paginate-v2": "^1.8.3",
+        "mongoose": "^8.5.0",
+        "mongoose-paginate-v2": "^1.8.2",
         "passport": "^0.7.0",
-        "passport-github2": "^0.1.12",
         "passport-jwt": "^4.0.1",
-        "passport-local": "^1.0.0",
-        "socket.io": "^4.7.5",
-        "uuid": "^10.0.0"
-    },
-    "devDependencies": {
-        "eslint": "^9.7.0",
-        "nodemon": "^3.1.4"
+        "socket.io": "^4.7.5"
     }
 }

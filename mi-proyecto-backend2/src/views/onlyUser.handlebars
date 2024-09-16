@@ -13,6 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: white;
         }
 
         .container {
@@ -36,23 +37,24 @@
             padding: 10px 20px;
             font-size: 1em;
             font-weight: bold;
-            color: white;
-            background-color: #007bff;
-            border: none;
+            color: black;
+            background-color: orange;
+            border: 2px solid orange;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
         }
 
         .back-button:hover {
-            background-color: #0056b3;
+            background-color: darkorange;
+            border-color: darkorange;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <img src="images/security.jpg" alt="Acceso denegado">
+        <img src="images/security.png" alt="Acceso denegado">
         <div class="message">{{message}}</div>
         <a href="/realtimeproducts" class="back-button">Ir a productos en tiempo real</a>
     </div>

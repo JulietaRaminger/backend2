@@ -1,73 +1,85 @@
-/* Estilos generales */
+/* styles.css */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #000000;
-    /* Fondo blanco */
-    color: #333;
-    /* Texto gris oscuro */
+    background-color: black;
+    /* Fondo negro */
+    color: white;
+    /* Texto blanco */
     margin: 0;
     padding: 0;
 }
 
-/* Contenedor principal */
-div {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #494848;
-    /* Fondo gris claro */
-    border-radius: 8px;
-}
-
-/* Encabezado de la sección */
-h3 {
-    text-align: center;
-    color: #ff007f;
-    /* Color rosita */
+h1 {
+    font-size: 2rem;
+    color: orange;
+    /* Título en color naranja */
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
-/* Estilo de la tabla */
-table {
-    width: 100%;
-    border-collapse: collapse;
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    /* Fondo gris oscuro para el contenedor */
+    border-radius: 8px;
+    /* Bordes redondeados */
 }
 
-thead {
-    background-color: #ff007f;
-    /* Color rosita */
+fieldset {
+    border: 1px solid #444;
+    /* Borde gris oscuro */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+legend {
+    font-size: 1.25rem;
+    color: orange;
+    /* Leyenda en color naranja */
+    padding: 0 10px;
+}
+
+.form-label {
     color: white;
+    /* Etiquetas en blanco */
 }
 
-thead th {
-    padding: 10px;
-    text-align: left;
+.form-control {
+    background-color: #333;
+    /* Fondo de input en gris oscuro */
+    border: 1px solid #444;
+    /* Borde gris oscuro */
+    color: white;
+    /* Texto en blanco */
 }
 
-tbody tr {
-    background-color: #fff;
-    /* Fondo blanco */
-    border-bottom: 1px solid #ddd;
-    /* Línea de separación */
+.form-control::placeholder {
+    color: #aaa;
+    /* Placeholder en gris claro */
 }
 
-tbody td {
-    padding: 10px;
+.btn-primary {
+    background-color: orange;
+    /* Botón en naranja */
+    border-color: orange;
+    /* Borde del botón en naranja */
 }
 
-tbody tr:hover {
-    background-color: #dadada;
-    /* Fondo gris claro al pasar el mouse */
+.btn-primary:hover {
+    background-color: #e07b00;
+    /* Botón en naranja oscuro al pasar el cursor */
+    border-color: #e07b00;
+    /* Borde del botón en naranja oscuro al pasar el cursor */
 }
 
-tbody td img {
-    width: 50px;
-    height: auto;
-    border-radius: 5px;
+.mb-3 {
+    margin-bottom: 20px;
 }
 
-/* Estilo de imagen cuando no hay imagen */
-tbody td.no-image {
-    color: #ccc;
-    /* Texto gris claro */
+.text-center {
+    text-align: center;
 }

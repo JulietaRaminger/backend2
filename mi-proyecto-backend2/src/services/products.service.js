@@ -21,6 +21,13 @@ class ProductService {
     async deleteProduct(id) {
         return await ProductRepository.deleteProduct(id);
     }
+
+    // En ProductService.js
+async getProductsByThumbnails(thumbnails) {
+    // Supongamos que tienes una función para obtener productos por imagen
+    return await productModel.find({ 'thumbnails': { $in: thumbnails } });
+}
+
 }
 
 export default new ProductService;

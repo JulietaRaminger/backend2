@@ -1,0 +1,98 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h2 {
+    color: white;
+}
+
+.container {
+    padding: 20px;
+}
+
+.card {
+    background-color: #222;
+    border: 1px solid #ff6600;
+    border-radius: 8px;
+}
+
+.card-img-top {
+    border-bottom: 1px solid #ff6600;
+}
+
+.card-body {
+    color: white;
+}
+
+.card-title,
+.card-text {
+    color: white;
+}
+
+.btn-primary {
+    background-color: #ff6600;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #cc5200;
+}
+
+.btn-secondary {
+    background-color: #444;
+    border: 1px solid #ff6600;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #555;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

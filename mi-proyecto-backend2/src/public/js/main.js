@@ -18,12 +18,17 @@ socket.on('paginatedProducts', (data, totalPages, page) => {
 
 function updatePagination(totalPages, currentPage) {
     const paginationContainer = document.getElementById('paginationContainer');
+    if (!paginationContainer) {
+        console.warn("No se encontró el contenedor de paginación.");
+        return;
+    }
     paginationContainer.innerHTML = `
         <button class="btn btn-secondary me-2" onclick="requestProductsPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>
         Página ${currentPage} de ${totalPages}
         <button class="btn btn-secondary ms-2" onclick="requestProductsPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>
     `;
 }
+
 
 function updatePaginationworking(totalPages, currentPage) {
     const paginationContainer = document.getElementById('paginationContainer');
