@@ -1,32 +1,58 @@
-import { productManager } from "../daos/productsDAO.js";
+import ProductManager from '../dao/db/product-manager-db.js';
+import ProductDTO from '../dto/product.dto.js';
 
 class ProductRepository {
-    constructor() {
+
+
+    async getProducts(queryParams) {
+        const productsData = await ProductManager.getProducts(queryParams);
+        return productsData.docs.map(product => new ProductDTO(
+            product.title,
+            product.description,
+            product.price,
+            product.code,
+            product.status,
+            product.stock,
+            product.category,
+            product.thumbnails
+        ));
     }
 
     async getProductById(id) {
-        return await productManager.getProductById(id);
+        const product = await ProductManager.getProductById(id);
+        return product ? new ProductDTO(
+            product.title,
+            product.description,
+            product.price,
+            product.code,
+            product.status,
+            product.stock,
+            product.category,
+            product.thumbnails
+        ) : null;
     }
 
-    async addProduct(title, description, price, thumbnail, code, stock, category) {
-        return await productManager.addProduct(title, description, price, thumbnail, code, stock, category);
+    async addProduct(productData) {
+        const productDTO = new ProductDTO(
+            productData.title,
+            productData.description,
+            productData.price,
+            productData.code,
+            productData.status,
+            productData.stock,
+            productData.category,
+            productData.thumbnails
+        );
+        return await ProductManager.addProduct(productDTO);
     }
 
-    async updateProduct(id, updatedProduct) {
-        return await productManager.updateProduct(id, updatedProduct);
+    async updateProduct(id, updatedFields) {
+        return await ProductManager.updateProduct(id, updatedFields);
     }
 
-    async removeProduct(id) {
-        return await productManager.removeProduct(id);
-    }
-
-    async getProducts(queryParams) {
-        return await productManager.getProducts(queryParams);
-    }
-
-    async getProductByCode(code) {
-        return await productManager.getProductByCode(code);
+    async deleteProduct(id) {
+        return await ProductManager.deleteProduct(id);
     }
 }
 
-export default ProductRepository;
+export default new ProductRepository;

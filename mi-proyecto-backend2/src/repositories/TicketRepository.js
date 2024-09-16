@@ -1,17 +1,11 @@
-import Ticket from "../models/ticket.js";
+import TicketManager from '../dao/db/ticket-manager-db.js';
+import TicketDTO from '../dto/ticket.dto.js';
 
 class TicketRepository {
-    constructor() {
-    }
     async createTicket(ticketData) {
-        try {
-            const newTicket = new Ticket(ticketData);
-            return await newTicket.save();
-        } catch (error) {
-            console.error('Error al crear el ticket:', error);
-            throw error;
-        }
+        const ticket = await TicketManager.createTicket(ticketData);
+        return new TicketDTO(ticket);
     }
 }
 
-export default TicketRepository;
+export default new TicketRepository();

@@ -1,106 +1,97 @@
-import express from 'express';
-import { createServer } from 'http';
-import { Server as SocketServer } from 'socket.io';
-import { engine } from 'express-handlebars';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import session from 'express-session';
-import passport from 'passport';
-import cookieParser from 'cookie-parser';
-import viewsRouter from './routes/views.routes.js';
-import prodsRouter from './routes/products.routes.js';
-import cartsRouter from './routes/carts.routes.js';
-import userRouter from './routes/users.routes.js'
-import authRoutes from './routes/auth.routes.js';
-import protectedRouter from './routes/protected.routes.js';
-import { productManager } from './daos/productsDAO.js';
-import currentUser from './middleware/currentUser.js';
-import mongoose from 'mongoose';
-import './utils/passport.js';
-import dotenv from 'dotenv';
-dotenv.config();
+import express from "express";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import { engine } from "express-handlebars";
 
-// Variables para __dirname con ES6 modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import ProductManager from "./dao/db/product-manager-db.js";
 
-// Creación de la aplicación Express y del servidor HTTP
+import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
+import viewsRouter from "./routes/views.router.js";
+import sessionRouter from "./routes/session.router.js";
+import usersRouter from "./routes/users.router.js";
+
+import cookieParser from "cookie-parser";
+
+import connectDB from './config/database.js';
+
+import passport from "passport";
+import initializePassport from './config/passport.config.js';
+
+connectDB();
+
 const app = express();
-const server = createServer(app);
 const PORT = 8080;
 
-// Configuración del servidor HTTP
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+const httpServer = createServer(app);
+const io = new Server(httpServer);
+
 app.use(cookieParser());
-
-// Configuración de sesión
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true
-}));
-
-// Inicializar Passport y manejar sesiones
 app.use(passport.initialize());
-app.use(passport.session());
+initializePassport();
 
-// Configuración de Handlebars
 const hbs = engine({
-    runtimeOptions: {
-        allowProtoPropertiesByDefault: true,
-        allowProtoMethodsByDefault: true
-    }
+    helpers: {
+        gt: function (a, b) {
+            return a > b;
+        },
+        ifEquals: function (arg1, arg2, options) {
+            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+        }
+    },
+    extname: '.handlebars',
+    defaultLayout: 'main',
+    layoutsDir: './src/views/layouts/',
 });
 
 app.engine('handlebars', hbs);
 app.set('view engine', 'handlebars');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', './src/views');
 
-// Configuración de las rutas
-app.use('/', viewsRouter);
-app.use('/api/products', prodsRouter);
-app.use('/api/carts', cartsRouter);
-app.use('/api/user', userRouter);
-app.use('/api/sessions', authRoutes);
-app.use('/api', currentUser, protectedRouter);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static("./src/public"));
 
-// Iniciar servidor HTTP en el puerto especificado
-server.listen(PORT, () => {
-    console.log(`Servidor en puerto ${PORT}`);
-    console.log(`Visita http://localhost:${PORT}`);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+app.use("/api/sessions", sessionRouter);
+app.use("/api/users", usersRouter);
+
+app.use("/", viewsRouter);
+
+app.set("socketio", io);
+
+httpServer.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
-// Configuración de Socket.IO
-const io = new SocketServer(server);
+io.on("connection", async (socket) => {
+    console.log('Cliente conectado');
 
-io.on('connection', (socket) => {
-    console.log(`Nuevo cliente conectado: ${socket.id}`);
-    socket.on('createProduct', async (data) => {
-        try {
-            console.log(data.stock);
-            const product = await productManager.addProduct(data.title, data.description, data.price, data.thumbnail, data.code, data.stock);
-            io.emit('productCreated', { message: 'Producto creado', product });
-        } catch (error) {
-            socket.emit('productError', { message: error.message });
-        }
+    let currentPage = 1;
+    const limit = 10;
+
+    const products = await ProductManager.getProducts({ limit, page: currentPage });
+    socket.emit('products', products.docs, products.totalPages, currentPage);
+
+    socket.on('requestProductsPage', async (page) => {
+        const products = await ProductManager.getProducts({ limit, page });
+        socket.emit('paginatedProducts', products.docs, products.totalPages, page);
+    });
+
+    socket.on('addProduct', async (productData) => {
+        await ProductManager.addProduct(productData);
+        const updatedProducts = await ProductManager.getProducts({ limit, page: currentPage });
+        io.emit('products', updatedProducts.docs, updatedProducts.totalPages, currentPage);
+    });
+
+    socket.on('deleteProduct', async (productId) => {
+        await ProductManager.deleteProduct(productId);
+        const updatedProducts = await ProductManager.getProducts({ limit, page: currentPage });
+        io.emit('products', updatedProducts.docs, updatedProducts.totalPages, currentPage);
     });
 
     socket.on('disconnect', () => {
-        console.log(`Cliente desconectado: ${socket.id}`);
+        console.log('Cliente desconectado');
     });
-
-    socket.on('error', (error) => {
-        console.error('Error WebSocket:', error);
-    });
-});
-
-// Configuración de Mongoose
-mongoose.connect(process.env.MONGO_URI, {
-    // Validaciones ----
-}).then(() => {
-    console.log('Conectado a MongoDB');
-}).catch(err => {
-    console.error('Error al conectar a MongoDB', err);
 });

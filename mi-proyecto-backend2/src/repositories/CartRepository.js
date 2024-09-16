@@ -1,40 +1,48 @@
-import { CartDao } from '../daos/CartDao.js';
+import CartManager from '../dao/db/cart-manager-db.js';
+import CartDTO from '../dto/cart.dto.js';
 
 class CartRepository {
-    constructor() {
-    }
-
-    async getAllCarts() {
-        return await CartDao.getAllCarts();
-    }
-
-    async getCartById(cartId) {
-        return await CartDao.getCartById(cartId);
-    }
-
-    async removeProductFromCart(cartId, productId) {
-        return await CartDao.removeProductFromCart(cartId, productId);
-    }
-
-    async updateCart(cartId, products) {
-        return await CartDao.updateCart(cartId, products);
-    }
-
-    async updateProductQuantity(cartId, productId, quantity) {
-        return await CartDao.updateProductQuantity(cartId, productId, quantity);
-    }
-
-    async addProductToCart(cartId, productId, quantity) {
-        return await CartDao.addProductToCart(cartId, productId, quantity);
-    }
 
     async createCart() {
-        return await CartDao.createCart();
+        const cart = await CartManager.createCart();
+        return { cartDTO: new CartDTO(cart.products), _id: cart._id };
     }
 
-    async clearAllCarts() {
-        return await CartDao.clearCart();
+    async getCartById(id) {
+        const cart = await CartManager.getCartById(id);
+        return new CartDTO(cart.products);
+    }
+
+    async getFullCartById(cid) {
+        const cart = await CartManager.getCartById(cid);
+        return cart;
+    }
+
+    async addProductToCart(cid, pid) {
+        const updatedCart = await CartManager.addProductToCart(cid, pid);
+
+        return new CartDTO(updatedCart.products);
+    }
+
+    async removeProductFromCart(cid, pid) {
+        const updatedCart = await CartManager.removeProductFromCart(cid, pid);
+        return new CartDTO(updatedCart.products);
+    }
+
+    async updateCart(cid, products) {
+        const updatedCart = await CartManager.updateCart(cid, products);
+        return new CartDTO(updatedCart.products);
+    }
+
+    async updateProductQuantity(cid, pid, quantity) {
+        const updatedCart = await CartManager.updateProductQuantity(cid, pid, quantity);
+        return new CartDTO(updatedCart.products);
+    }
+
+    async clearCart(cid) {
+        const updatedCart = await CartManager.clearCart(cid);
+        return new CartDTO(updatedCart.products);
     }
 }
 
-export default CartRepository;
+export default new CartRepository;
