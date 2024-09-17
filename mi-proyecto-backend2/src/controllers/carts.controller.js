@@ -94,7 +94,7 @@ class CartController {
             if (!cart || cart.products.length === 0) {
                 return res.status(400).json({ message: "El carrito está vacío. No se puede finalizar la compra." });
             }
-            
+
             const { ticket, unavailableProducts } = await CartService.purchase(cartId);
 
             res.json({

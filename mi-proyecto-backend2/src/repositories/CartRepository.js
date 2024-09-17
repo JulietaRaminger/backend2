@@ -11,7 +11,7 @@ class CartRepository {
     async getCartById(id) {
         const cart = await CartManager.getCartById(id);
         if (!cart) {
-            throw new Error(`Carrito con ID ${id} no encontrado`); // Nueva verificación
+            throw new Error(`Carrito con ID ${id} no encontrado`);
         }
         return new CartDTO(cart.products);
     }
@@ -19,7 +19,7 @@ class CartRepository {
     async getFullCartById(cid) {
         const cart = await CartManager.getCartById(cid);
         if (!cart) {
-            throw new Error(`Carrito con ID ${cid} no encontrado`); // Nueva verificación
+            throw new Error(`Carrito con ID ${cid} no encontrado`);
         }
         return cart;
     }
@@ -27,7 +27,7 @@ class CartRepository {
     async addProductToCart(cid, pid) {
         const cart = await CartManager.getCartById(cid);
         if (!cart) {
-            throw new Error(`Carrito con ID ${cid} no encontrado`); // Nueva verificación
+            throw new Error(`Carrito con ID ${cid} no encontrado`);
         }
 
         const updatedCart = await CartManager.addProductToCart(cid, pid);
@@ -37,7 +37,7 @@ class CartRepository {
     async removeProductFromCart(cid, pid) {
         const cart = await CartManager.getCartById(cid);
         if (!cart) {
-            throw new Error(`Carrito con ID ${cid} no encontrado`); // Nueva verificación
+            throw new Error(`Carrito con ID ${cid} no encontrado`);
         }
 
         const updatedCart = await CartManager.removeProductFromCart(cid, pid);
@@ -47,7 +47,7 @@ class CartRepository {
     async updateCart(cid, products) {
         const cart = await CartManager.getCartById(cid);
         if (!cart) {
-            throw new Error(`Carrito con ID ${cid} no encontrado`); // Nueva verificación
+            throw new Error(`Carrito con ID ${cid} no encontrado`);
         }
 
         const updatedCart = await CartManager.updateCart(cid, products);
@@ -57,7 +57,7 @@ class CartRepository {
     async updateProductQuantity(cid, pid, quantity) {
         const cart = await CartManager.getCartById(cid);
         if (!cart) {
-            throw new Error(`Carrito con ID ${cid} no encontrado`); // Nueva verificación
+            throw new Error(`Carrito con ID ${cid} no encontrado`);
         }
 
         const updatedCart = await CartManager.updateProductQuantity(cid, pid, quantity);
@@ -67,7 +67,7 @@ class CartRepository {
     async clearCart(cid) {
         const cart = await CartManager.getCartById(cid);
         if (!cart) {
-            throw new Error(`Carrito con ID ${cid} no encontrado`); // Nueva verificación
+            throw new Error(`Carrito con ID ${cid} no encontrado`);
         }
 
         const updatedCart = await CartManager.clearCart(cid);

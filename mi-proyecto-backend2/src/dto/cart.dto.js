@@ -7,4 +7,4 @@ class CartDTO {
     }
 }
 
-export default CartDTO; 
+export default CartDTO;
