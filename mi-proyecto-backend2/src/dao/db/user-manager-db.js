@@ -4,7 +4,6 @@ class UserManager {
     async createUser(userDTO) {
         try {
             const newUser = new User(userDTO);
-
             return await newUser.save();
         } catch (error) {
             console.error("Error al crear el usuario:", error);
@@ -42,6 +41,7 @@ class UserManager {
             throw new Error("Error al obtener el carrito del usuario");
         }
     }
+
     async findOne(query) {
         return await User.findOne(query);
     }

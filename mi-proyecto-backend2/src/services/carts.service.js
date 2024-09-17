@@ -24,7 +24,7 @@ class CartService {
         try {
             const cart = await CartRepository.getCartById(cid);
             if (!cart) throw new Error("Carrito no encontrado.");
-    
+            
             const product = await ProductRepository.getProductById(pid);
             if (!product) throw new Error("Producto no encontrado.");
     
@@ -47,6 +47,7 @@ class CartService {
             throw new Error("Error al agregar el producto al carrito.");
         }
     }
+    
 
     async removeProductFromCart(cid, pid) {
         return await CartRepository.removeProductFromCart(cid, pid);

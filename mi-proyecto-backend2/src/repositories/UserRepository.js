@@ -12,9 +12,11 @@ class UserRepository {
     async getUserById(id) {
         return await UserManager.getUserById(id);
     }
+
     async getUserByUsername(username) {
         return await UserManager.findOne({ username });
     }
+
     async getUserByEmail(email) {
         return await UserManager.findOne({ email });
     }
@@ -27,10 +29,20 @@ class UserRepository {
             throw new Error("Error al obtener usuario por ID de carrito");
         }
     }
-    async getCartByUserId(id) {
-        return await UserManager.getCartByUserId(id);
+    
+    async getCartByUserId(userId) {
+        try {
+            const user = await UserManager.getUserById(userId);
+            if (!user) {
+                throw new Error("Usuario no encontrado");
+            }
+            return user.cart;
+        } catch (error) {
+            console.error("Error al obtener el carrito por ID de usuario:", error);
+            throw new Error("Error al obtener el carrito por ID de usuario");
+        }
     }
-
+    
     async updateUser(id, userDTO) {
         return await UserManager.updateUser(id, userDTO);
     }

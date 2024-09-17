@@ -9,7 +9,7 @@ const router = Router();
 router.use(extractUserFromToken);
 
 router.get("/", passport.authenticate("jwt", { session: false, failureRedirect: "/login" }), onlyUser, async (req, res) => {
-    try {    
+    try {
         const { limit = 10, page = 1, sort, query } = req.query;
 
         const products = await ProductManager.getProducts({
@@ -19,28 +19,34 @@ router.get("/", passport.authenticate("jwt", { session: false, failureRedirect: 
             query,
         });
 
-        const arrayProducts = products.docs.map(product => {
-            return product._doc;
-        });
+        if (!products || !Array.isArray(products.docs)) {
+            throw new Error('Productos no encontrados');
+        }
+
+        const arrayProducts = products.docs.map(product => product._doc);
 
         const user = await userRepository.getUserByUsername(res.locals.username);
-        const cart = await userRepository.getCartByUserId(user._id);
+        if (!user) {
+            return res.status(404).json({ status: 'error', error: 'Usuario no encontrado' });
+        }
 
-        res.render(
-            'home',
-            {
-                cart: cart._id,
-                products: arrayProducts,
-                totalPages: products.totalPages,
-                prevPage: products.prevPage || 1,
-                nextPage: products.nextPage || null,
-                page: products.page,
-                hasPrevPage: products.hasPrevPage,
-                hasNextPage: products.hasNextPage,
-                prevLink: products.hasPrevPage ? `/api/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}` : null,
-                nextLink: products.hasNextPage ? `/api/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}` : null
-            }
-        );
+        const cart = await userRepository.getCartByUserId(user._id);
+        if (!cart) {
+            return res.status(404).json({ status: 'error', error: 'Carrito no encontrado' });
+        }
+
+        res.render('home', {
+            cart: cart._id,
+            products: arrayProducts,
+            totalPages: products.totalPages,
+            prevPage: products.prevPage || 1,
+            nextPage: products.nextPage || null,
+            page: products.page,
+            hasPrevPage: products.hasPrevPage,
+            hasNextPage: products.hasNextPage,
+            prevLink: products.hasPrevPage ? `/api/products?limit=${limit}&page=${products.prevPage}&sort=${sort}&query=${query}` : null,
+            nextLink: products.hasNextPage ? `/api/products?limit=${limit}&page=${products.nextPage}&sort=${sort}&query=${query}` : null
+        });
 
     } catch (error) {
         console.error("Error al obtener productos", error);
@@ -50,6 +56,7 @@ router.get("/", passport.authenticate("jwt", { session: false, failureRedirect: 
         });
     }
 });
+
 
 router.get("/products/:pid", async (req, res) => {
     try {
